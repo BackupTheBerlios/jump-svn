@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== 
+     Aug 7, 2004 3:18:54 PM                                                        
+
+     mpd4j
+     darkjedi                                                                
+     ====================================================================== -->
+<project name="mpd4j" default="usage">
+    <description>
+            Java client for the Music Player Daemon (MPD)
+    </description>
+	<property name="name" value="mpd4j"/>
+	
+	<property name="src.dir" value="src/java"/>
+	<property name="test.src.dir" value="src/test"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="resource.dir" value="src/resources"/>
+	<property name="dist.dir" value="dist"/>
+	
+	<!-- Transient directories -->
+	<property name="build.dir" value="build"/>
+	
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+    <!-- ================================= 
+          target: usage
+         ================================= -->
+    <target name="usage" description="Outputs usage information">
+        <echo message=""/>
+        <echo message="${name} build file"/>
+        <echo message="-----------------------------------"/>
+        <echo message=""/>
+        <echo message="Available targets are:"/>
+        <echo message=""/>
+        <echo message="clean           --> clean out all generated files (classes, mappings, ...)" />
+    	<echo message="compile         --> compile the source files"/>
+    	<echo message="jar 	           --> create the jar file"/>
+    	<echo message="javadoc         --> create API documentation"/>
+        <echo message=""/>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: init
+         - - - - - - - - - - - - - - - - - -->
+    <target name="init">
+    	<mkdir dir="${build.dir}"/>
+    </target>
+	
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: clean
+         - - - - - - - - - - - - - - - - - -->
+    <target name="clean">
+    	<delete includeemptydirs="true">
+    		<fileset dir="${build.dir}"
+    				 includes="**/*"
+    		/>
+    	</delete>
+    </target>
+	
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: compile
+         - - - - - - - - - - - - - - - - - -->
+    <target name="compile" depends="init">
+    	<javac destdir="${build.dir}"
+    		   deprecation="false"
+    		   failonerror="true"
+		   debug="on">
+    		<src path="${src.dir}"/>
+    		<classpath refid="classpath"/>
+    	</javac>
+	</target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: jar
+         - - - - - - - - - - - - - - - - - -->
+    <target name="jar" depends="compile">
+    	<mkdir dir="${dist.dir}"/>
+    	<copy todir="${build.dir}">
+    		<fileset dir="${resource.dir}"/>
+    	</copy>
+    	<jar destfile="${dist.dir}/mpd4j.jar" 
+    		 basedir="${build.dir}"/>
+    </target>
+	
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: javadoc
+         - - - - - - - - - - - - - - - - - -->
+    <target name="javadoc">
+    	<javadoc 
+				breakiterator="yes"
+				locale="en_US" 
+				sourcepath="src/java" 
+				destdir="doc/api" 
+				access="protected" 
+				use="true" 
+				notree="false" 
+				nonavbar="false" 
+				noindex="false" 
+				splitindex="false" 
+				author="true" 
+				version="true" 
+				nodeprecatedlist="false" 
+				nodeprecated="false" 
+				packagenames="org.outerrim.mpd4j"
+				bottom="&lt;a href='http://jump.berlios.de'&gt;Mpd4j - Java client for MPD&lt;/a&gt; &lt;br/&gt;&lt;br/&gt; &lt;a href='http://berlios.de/projects/jump/' target='_parent'&gt; &lt;img src='http://developer.berlios.de/bslogo.php?group_id=3431' width='124' height='32' border='0' alt='Berlios.de Logo' /&gt;&lt;/a&gt;" 
+				doctitle="Project: Mpd4j">
+    		<classpath refid="classpath"/> 
+        	<link href="http://java.sun.com/j2se/1.4.2/docs/api" />
+        </javadoc>
+    </target>
+
+</project>
+
