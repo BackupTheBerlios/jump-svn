@@ -252,8 +252,8 @@ public class Mpd4j {
      * 
      * @return Map containg the statistics.
      */
-    public Map<String,String> getMPDStats() {
-        Map<String,String> result = new HashMap<String,String>();
+    public MPDStats getMPDStats() {
+        MPDStats result = new MPDStats();
         
         String response = sendCommand( MPDConstants.MPD_CMD_STATISTICS );
         log.info( response );
@@ -261,7 +261,23 @@ public class Mpd4j {
         StringTokenizer st = new StringTokenizer( response, "\n" );
         while( st.hasMoreTokens() ) {
             String[] stat = st.nextToken().split( ": " );
-            result.put( stat[0], stat[1] );
+            if( stat[0].equals( MPDConstants.MPD_STATS_SONGS ) ) {
+                result.setSongs( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_UPTIME ) ) {
+                result.setUptime( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_PLAYTIME ) ) {
+                result.setPlaytime( Integer.parseInt( stat[1] ) );                
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_DB_PLAYTIME ) ) {
+                result.setDBPlaytime( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_DB_UPDATE ) ) {
+                result.setDBUpdate( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_ARTISTS ) ) {
+                result.setArtists( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATS_ALBUMS ) ) {
+                result.setAlbums( Integer.parseInt( stat[1] ) );
+            } else {
+                log.error( "Status type not recognized : " + stat[0] );
+            }
         }
         
         return result;
@@ -382,4 +398,10 @@ public class Mpd4j {
 		
 		return returnVal.toString();
 	}
+    
+    static public void main( String[] args ) {
+        Mpd4j mpd = new Mpd4j( "kashyyyk", 6600 );
+        MPDStats status = mpd.getMPDStats();
+        log.info( "status : " + status.toString() );
+    }
 }
