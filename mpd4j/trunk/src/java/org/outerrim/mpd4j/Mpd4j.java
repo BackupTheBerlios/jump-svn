@@ -24,9 +24,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
@@ -83,22 +81,34 @@ public class Mpd4j {
      *  <li> Id
      * </ul>
      * 
-     * @return A List containing the information from the playlist, with each track in a Map
+     * @return A List containing the information from the playlist
      */
-    public List<Map<String,String>> getPlaylist() {
-        List<Map<String,String>> results = new ArrayList<Map<String,String>>();
+    public List<Track> getPlaylist() {
+        List<Track> results = new ArrayList<Track>();
         String response = sendCommand( MPDConstants.MPD_CMD_PL_LIST );
         StringTokenizer st = new StringTokenizer( response, "\n" );
         
-        Map<String,String> track = null;
+        Track track = null;
         while(  st.hasMoreTokens() ) {
             String[] element = st.nextToken().split( ": " );
             
             if( element[0].equals( "file" ) ) {
-                track = new HashMap<String,String>();
+                track = new Track();
                 results.add( track );
+                track.setFilename( element[1] );
+            } else if( element[0].equals( "Time" ) ) {
+                track.setTime( element[1] );
+            } else if( element[0].equals( "Title" ) ) {
+                track.setName( element[1] );
+            } else if( element[0].equals( "Artist" ) ) {
+                track.setArtist( element[1] );
+            } else if( element[0].equals( "Track" ) ) {
+                track.setTrackNumber( Integer.parseInt( element[1] ) );
+            } else if( element[0].equals( "Album" ) ) {
+                track.setAlbum( element[1] );
+            } else if( element[0].equals( "Genre" ) ) {
+                track.setGenre( element[1] );
             }
-            track.put( element[0], element[1] );
         }
         
         return results;
