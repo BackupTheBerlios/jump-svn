@@ -1,0 +1,27 @@
+Mpd4j README
+http://jump.berlios.de
+
+Copyright (C) 2005  Michael Osterlie
+See LICENSE for license details
+
+Mpd4j 0.1
+---------
+Mpd4j is a Java class for interface with a Music Player 
+Daemon (http://www.musicpd.org). To compile Mpd4j you will
+need the Java SDK 1.5+, available from http://java.sun.com
+if neccessary.
+
+Compiling
+---------
+Run Ant against the jar target using the supplied build.xml file
+
+$ ant jar
+
+This will compile the library, and place a jar file in the dist/ 
+directory containing mpd4j.jar.
+
+Using Mpd4j
+-----------
+The API is fairly straight-forward. Create an org.outerrim.mpd4j.Mpd4j
+object, either passing in the hostname and port number that MPD is running
+on. Methods can then be called on the Mpd4j object to interact with MPD.
