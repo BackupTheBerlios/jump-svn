@@ -56,7 +56,7 @@ public class MPDConstants {
 	static public final String MPD_CMD_START_BULK = "command_list_begin"; // Not yet implemented
 	static public final String MPD_CMD_END_BULK = "command_list_end"; // Not yet implemented
     
-    // Status items (for MPDStats)
+    // Stats items (for MPDStats)
     static public final String MPD_STATS_ARTISTS = "artists";
     static public final String MPD_STATS_ALBUMS = "albums";
     static public final String MPD_STATS_SONGS = "songs";
@@ -64,4 +64,24 @@ public class MPDConstants {
     static public final String MPD_STATS_PLAYTIME = "playtime";
     static public final String MPD_STATS_DB_PLAYTIME = "db_playtime";
     static public final String MPD_STATS_DB_UPDATE = "db_update";
+    
+    // Status items (for MPDStatus)
+    static public final String MPD_STATUS_STATE = "state";
+    static public final String MPD_STATUS_SONG = "song";
+    static public final String MPD_STATUS_TIME = "time";
+    static public final String MPD_STATUS_REPEAT = "repeat";
+    static public final String MPD_STATUS_RANDOM = "random";
+    static public final String MPD_STATUS_VOLUME = "volume";
+    static public final String MPD_STATUS_UPTIME = "uptime";
+    static public final String MPD_STATUS_PLAYTIME = "playtime";
+    static public final String MPD_STATUS_SONGS_PLAYED = "songs_played";
+    static public final String MPD_STATUS_NUMBER_ARTISTS = "num_artists";
+    static public final String MPD_STATUS_NUMBER_SONGS = "num_songs";
+    static public final String MPD_STATUS_NUMBER_ALBUMS = "num_albums";
+    static public final String MPD_STATUS_PLAYLIST = "playlist";
+    static public final String MPD_STATUS_PLAYLIST_LENGTH = "playlistlength";
+    static public final String MPD_STATUS_CROSSFADE = "xfade";
+    static public final String MPD_STATUS_SONGID = "songid";
+    static public final String MPD_STATUS_BITRATE = "bitrate";
+    static public final String MPD_STATUS_AUDIO = "audio";
 }

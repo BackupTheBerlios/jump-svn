@@ -276,7 +276,7 @@ public class Mpd4j {
             } else if( stat[0].equals( MPDConstants.MPD_STATS_ALBUMS ) ) {
                 result.setAlbums( Integer.parseInt( stat[1] ) );
             } else {
-                log.error( "Status type not recognized : " + stat[0] );
+                log.error( "Stat type not recognized : " + stat[0] );
             }
         }
         
@@ -303,17 +303,58 @@ public class Mpd4j {
 	 * 
 	 * @return Map containing each of the status values
 	 */
-	public Map<String,String> getStatus() {
-		Map<String,String> statusMap = new HashMap<String,String>();
+	public MPDStatus getStatus() {
+        MPDStatus result = new MPDStatus();
 		
-		String status = sendCommand( MPDConstants.MPD_CMD_STATUS );
-		StringTokenizer st = new StringTokenizer( status, "\n" );
+		String response = sendCommand( MPDConstants.MPD_CMD_STATUS );
+        log.info( response );
+		StringTokenizer st = new StringTokenizer( response, "\n" );
 		while( st.hasMoreTokens() ) {
-			String[] element = st.nextToken().split( ": " );
-			statusMap.put( element[0], element[1] );
-		}
+			String[] stat = st.nextToken().split( ": " );
+            if( stat[0].equals( MPDConstants.MPD_STATUS_STATE ) ) {
+                result.setState( stat[1] );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_SONG ) ) {
+                result.setSong( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_TIME ) ) {
+                String[] time = stat[1].split( ":" );
+                result.setTotalTime( Long.parseLong( time[0] ) );                
+                result.setElapsedTime( Long.parseLong( time[1] ) );                
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_REPEAT ) ) {
+                result.setRepeat( stat[1].equals( "1" ) ? true : false );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_RANDOM ) ) {
+                result.setRandom( stat[1].equals( "1" ) ? true : false );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_VOLUME ) ) {
+                result.setVolume( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_UPTIME ) ) {
+                result.setUptime( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_PLAYTIME ) ) {
+                result.setPlaytime( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_SONGS_PLAYED ) ) {
+                result.setSongsPlayed( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_NUMBER_ARTISTS ) ) {
+                result.setNumberOfArtists( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_NUMBER_SONGS ) ) {
+                result.setNumberOfSongs( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_NUMBER_ALBUMS ) ) {
+                result.setNumberOfAlbums( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_PLAYLIST ) ) {
+                result.setPlaylist( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_PLAYLIST_LENGTH ) ) {
+                result.setPlaylistLength( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_CROSSFADE ) ) {
+                result.setCrossfade( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_SONGID ) ) {
+                result.setSongId( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_BITRATE ) ) {
+                result.setBitrate( Integer.parseInt( stat[1] ) );
+            } else if( stat[0].equals( MPDConstants.MPD_STATUS_AUDIO ) ) {
+                result.setAudio( stat[1] );
+            } else {
+                log.error( "Status type not recognized : " + stat[0] );
+            }
+        }
 		
-		return statusMap;
+		return result;
 	}
 	
     /**
@@ -401,7 +442,7 @@ public class Mpd4j {
     
     static public void main( String[] args ) {
         Mpd4j mpd = new Mpd4j( "kashyyyk", 6600 );
-        MPDStats status = mpd.getMPDStats();
+        MPDStatus status = mpd.getStatus();
         log.info( "status : " + status.toString() );
     }
 }
